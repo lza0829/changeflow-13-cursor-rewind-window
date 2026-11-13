@@ -24,7 +24,8 @@ onMounted(async () => {
       <div class="tile"><div class="hero-num">{{ stats.sink_count }}</div><div class="muted">Sink</div></div>
       <div class="tile"><div class="hero-num">{{ stats.quarantine_count }}</div><div class="muted">隔离</div></div>
       <div class="tile"><div class="hero-num">{{ stats.run_count }}</div><div class="muted">Apply Runs</div></div>
+      <div class="tile"><div class="hero-num">{{ stats.replay_task_count || 0 }}</div><div class="muted">回拨重放任务</div></div>
     </div>
-    <router-link to="/apply">去应用台跑一趟 →</router-link>
+    <router-link to="/replay">发起游标回拨重放窗 →</router-link>
   </div>
 </template>

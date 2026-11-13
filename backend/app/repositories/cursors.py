@@ -27,6 +27,19 @@ def mark_applied(conn: sqlite3.Connection, stream_id: int, seq: int, run_id: int
     )
 
 
+def high_water_mark(conn: sqlite3.Connection, stream_id: int) -> int:
+    """已成功 Apply 的 seq 高水位（applied_seqs 的最大 seq）。
+
+    重放期间流游标 ``streams.apply_cursor`` 会被临时回拨，不能当作高水位；
+    applied_seqs 在重放中保持不变，才是判断“哪些事件可以重放”的耐久依据。
+    """
+    row = conn.execute(
+        "SELECT COALESCE(MAX(seq), 0) AS hwm FROM applied_seqs WHERE stream_id=?",
+        (stream_id,),
+    ).fetchone()
+    return int(row["hwm"] or 0)
+
+
 def list_cursor_view(conn: sqlite3.Connection) -> list[dict[str, Any]]:
     rows = conn.execute(
         """

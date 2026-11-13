@@ -3,6 +3,7 @@ import Dashboard from './pages/Dashboard.vue'
 import Streams from './pages/Streams.vue'
 import Preview from './pages/Preview.vue'
 import Apply from './pages/Apply.vue'
+import Replay from './pages/Replay.vue'
 import Ledger from './pages/Ledger.vue'
 import Quarantine from './pages/Quarantine.vue'
 import Sink from './pages/Sink.vue'
@@ -15,6 +16,7 @@ export default createRouter({
     { path: '/streams', component: Streams },
     { path: '/preview', component: Preview },
     { path: '/apply', component: Apply },
+    { path: '/replay', component: Replay },
     { path: '/ledger', component: Ledger },
     { path: '/quarantine', component: Quarantine },
     { path: '/sink', component: Sink },

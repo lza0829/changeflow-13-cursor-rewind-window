@@ -12,15 +12,17 @@ def insert_ledger(
     run_id: int,
     event: dict[str, Any],
     disposition: str,
+    kind: str = "apply",
 ) -> None:
     conn.execute(
         """
-        INSERT INTO change_ledger(stream_id, run_id, seq, op, entity_key, event_ts, payload_json, disposition)
-        VALUES (?,?,?,?,?,?,?,?)
+        INSERT INTO change_ledger(stream_id, run_id, kind, seq, op, entity_key, event_ts, payload_json, disposition)
+        VALUES (?,?,?,?,?,?,?,?,?)
         """,
         (
             stream_id,
             run_id,
+            kind,
             int(event["seq"]),
             event["op"],
             event["entity_key"],
@@ -34,7 +36,7 @@ def insert_ledger(
 def list_ledger(conn: sqlite3.Connection, limit: int = 200) -> list[dict[str, Any]]:
     rows = conn.execute(
         """
-        SELECT id, stream_id, run_id, seq, op, entity_key, event_ts, payload_json, disposition
+        SELECT id, stream_id, run_id, kind, seq, op, entity_key, event_ts, payload_json, disposition
         FROM change_ledger ORDER BY id DESC LIMIT ?
         """,
         (limit,),

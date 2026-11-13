@@ -7,16 +7,17 @@ onMounted(async () => { rows.value = await getJSON('/api/ledger') })
 <template>
   <div class="page">
     <h1>变更账本</h1>
-    <p class="muted">每次 Apply 写入的事件处置记录（与报告同源）。</p>
+    <p class="muted">每次 Apply / 回拨重放写入的事件处置记录（与报告同源，只追加）。</p>
     <div class="panel">
       <table>
         <thead>
-          <tr><th>ID</th><th>流</th><th>run</th><th>seq</th><th>op</th><th>entity</th><th>disposition</th><th>event_ts</th></tr>
+          <tr><th>ID</th><th>流</th><th>来源</th><th>run/task</th><th>seq</th><th>op</th><th>entity</th><th>disposition</th><th>event_ts</th></tr>
         </thead>
         <tbody>
           <tr v-for="r in rows" :key="r.id">
             <td>{{ r.id }}</td>
             <td>{{ r.stream_id }}</td>
+            <td><span class="tag" :class="r.kind === 'replay' ? 'warn' : 'ok'">{{ r.kind || 'apply' }}</span></td>
             <td>{{ r.run_id }}</td>
             <td>{{ r.seq }}</td>
             <td>{{ r.op }}</td>
